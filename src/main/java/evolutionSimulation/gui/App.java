@@ -16,9 +16,6 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.System.exit;
-import static java.lang.System.out;
-
 
 public class App extends Application{
     AbstractWorldMap map;
@@ -33,55 +30,15 @@ public class App extends Application{
     int startEnergy;
     int plantEnergy;
     double jungleRatio;
+    int maxHeight = 600;
+    int maxWidth = 600;
 
-
-
-//    @Override
-//    public void init() {
-//        try {
-//            //args = getParameters().getRaw().toArray(new String[0]);
-//            //directions = new OptionsParser().parse(args);
-//
-////            int width = 5;
-////            int height = 5;
-////            int numberOfAnimals = 10;
-////            int startEnergy = 10;
-////            int plantEnergy = 10;
-////            int moveEnergy = 1;
-//            Grass.plantEnergy =plantEnergy;
-//            Animal.moveEnergy = moveEnergy;
-//            Animal.reproductionEnergy = startEnergy/2;
-//
-//            map = new WrapMap(width, height);
-////            positions = new Vector2d[]{new Vector2d(2, 2), new Vector2d(3, 4)};
-//            List<Vector2d> positions = new ArrayList<>();
-//            for (int i = 0; i < numberOfAnimals; i++){
-//                positions.add(new Vector2d((int) (Math.random()*height), (int) (Math.random()*width)));
-//            }
-//
-//
-//            //engine = new SimulationEngine(directions, map, positions, this);
-//            engine = new SimulationEngine(map, positions, startEnergy, this);
-//        } catch (IllegalArgumentException ex){
-//            out.println(ex.getMessage());
-//            exit(0);
-//        }
-//    }
-
-    private void startEngine(){
-        if (!engineThread.isAlive()) {
-            engineThread = new Thread(engine);
-            engineThread.start();
-        }
-    }
 
     @Override
     public void start(Stage primaryStage){
         try {
             gridPane = new GridPane();
             gridPane.setAlignment(Pos.CENTER);
-//            TextField textField = new TextField();
-
 
             Label labelWidth = new Label("Width: ");
             Label labelHeight = new Label("Height: ");
@@ -91,35 +48,31 @@ public class App extends Application{
             Label labelPlantEnergy = new Label("Plant Energy: ");
             Label labelJungleRatio = new Label("Jungle Ratio: ");
 
-            TextField widthField = new TextField("5");
-            TextField heightField = new TextField("5");
-            TextField numberOfAnimalsField = new TextField("10");
-            TextField startEnergyField = new TextField("10");
-            TextField moveEnergyField = new TextField("1");
-            TextField plantEnergyField = new TextField("5");
-            TextField jungleRatioField = new TextField("0.3");
+            TextField textFieldWidth = new TextField("5");
+            TextField textFieldHeight = new TextField("5");
+            TextField textFieldNumberOfAnimals = new TextField("10");
+            TextField textFieldStartEnergy = new TextField("10");
+            TextField textFieldMoveEnergy = new TextField("1");
+            TextField textFieldPlantEnergy = new TextField("5");
+            TextField textFieldJungleRatio = new TextField("0.25");
             Button startButton = new Button("Start");
 
             startButton.setOnAction(event -> {
-                width = Integer.parseInt(widthField.getText());
-                height = Integer.parseInt(heightField.getText());
-                numberOfAnimals = Integer.parseInt(numberOfAnimalsField.getText());
-                moveEnergy = Integer.parseInt(moveEnergyField.getText());
-                startEnergy = Integer.parseInt(startEnergyField.getText());
-                plantEnergy = Integer.parseInt(plantEnergyField.getText());
-                jungleRatio = Double.parseDouble(jungleRatioField.getText());
-
-//            Grass.plantEnergy =plantEnergy;
-//            Animal.moveEnergy = moveEnergy;
-//            Animal.reproductionEnergy = startEnergy/2;
-
+                width = Integer.parseInt(textFieldWidth.getText());
+                height = Integer.parseInt(textFieldHeight.getText());
+                numberOfAnimals = Integer.parseInt(textFieldNumberOfAnimals.getText());
+                moveEnergy = Integer.parseInt(textFieldMoveEnergy.getText());
+                startEnergy = Integer.parseInt(textFieldStartEnergy.getText());
+                plantEnergy = Integer.parseInt(textFieldPlantEnergy.getText());
+                jungleRatio = Double.parseDouble(textFieldJungleRatio.getText());
 
                 Grass.plantEnergy = plantEnergy;
                 Animal.moveEnergy = moveEnergy;
                 Animal.reproductionEnergy = startEnergy / 2;
+                AbstractWorldMap.jungeRatio = jungleRatio;
 
                 map = new WrapMap(width, height);
-//            positions = new Vector2d[]{new Vector2d(2, 2), new Vector2d(3, 4)};
+
                 List<Vector2d> positions = new ArrayList<>();
                 for (int i = 0; i < numberOfAnimals; i++) {
                     positions.add(new Vector2d((int) (Math.random() * height), (int) (Math.random() * width)));
@@ -127,40 +80,37 @@ public class App extends Application{
 
                 interactiveBox.getChildren().clear();
                 interactiveBox.getChildren().add(gridPane);
-                //engine = new SimulationEngine(directions, map, positions, this);
                 engine = new SimulationEngine(map, positions, startEnergy, this);
 
                 engineThread = new Thread(engine);
                 engineThread.start();
             });
 
-            interactiveBox = new VBox(labelWidth, widthField, labelHeight, heightField, labelNumberOfAnimals, numberOfAnimalsField, labelStartEnergy, startEnergyField, labelMoveEnergy, moveEnergyField, labelPlantEnergy, plantEnergyField, labelJungleRatio, jungleRatioField, startButton, gridPane);
-//        HBox buttonsAndMap = new HBox(interactiveBox, gridPane);
+            interactiveBox = new VBox(labelWidth, textFieldWidth, labelHeight, textFieldHeight, labelNumberOfAnimals, textFieldNumberOfAnimals, labelStartEnergy, textFieldStartEnergy, labelMoveEnergy, textFieldMoveEnergy, labelPlantEnergy, textFieldPlantEnergy, labelJungleRatio, textFieldJungleRatio, startButton);
 
-//            this.updateScene();
 
-            Scene scene = new Scene(interactiveBox, 800, 600);
+            Scene scene = new Scene(interactiveBox);
             primaryStage.setScene(scene);
-//        primaryStage.setFullScreen(true);
+            primaryStage.setMaximized(true);
             primaryStage.show();
-
 
         }catch (IllegalArgumentException ex){
         System.out.println(ex.getMessage());
         System.exit(1);
         }
-
     }
 
     public void updateScene(){
-        ColumnConstraints columnWidth = new ColumnConstraints(60);
-        RowConstraints rowHeight = new RowConstraints(60);
-        rowHeight.setValignment(VPos.CENTER);
-
         Vector2d[] boundaries = map.getBoundaries();
 
         int width = boundaries[1].x - boundaries[0].x + 2;
         int height = boundaries[1].y - boundaries[0].y + 2;
+
+        int gridSize = Math.min(maxWidth/ width, maxHeight/height);
+        ColumnConstraints columnWidth = new ColumnConstraints(gridSize);
+        RowConstraints rowHeight = new RowConstraints(gridSize);
+        rowHeight.setValignment(VPos.CENTER);
+
 
         for (int i = 0; i < height; i++) {
             gridPane.getRowConstraints().add(rowHeight);
@@ -194,7 +144,7 @@ public class App extends Application{
             for (int j = boundaries[0].x; j <= boundaries[1].x; j++){
                 Vector2d position = new Vector2d(j, i);
                 if (map.isOccupied(position)){
-                    GuiElementBox box = new GuiElementBox((map.objectAt(position)));
+                    GuiElementBox box = new GuiElementBox((map.objectAt(position)), gridSize, gridSize);
                     gridPane.add(box.vbox, j - boundaries[0].x + 1, boundaries[1].y - i + 1);
                     GridPane.setHalignment(label, HPos.CENTER);
                 }

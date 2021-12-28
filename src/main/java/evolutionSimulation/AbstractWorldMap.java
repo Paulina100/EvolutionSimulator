@@ -7,6 +7,7 @@ public abstract class AbstractWorldMap {
     protected Map<Vector2d, Grass> grassMap = new HashMap<>();
     protected final static Vector2d lowerLeft = new Vector2d(0, 0);
     protected Vector2d upperRight;
+    public static double jungeRatio;
 
     public AbstractWorldMap(int width, int height){
         this.upperRight = new Vector2d(width, height);
@@ -32,10 +33,14 @@ public abstract class AbstractWorldMap {
 
     public void growGrass(){
         List<Vector2d> emptySpace = new ArrayList<>();
+        List<Vector2d> emptyJungleSpace = new ArrayList<>();
         for (int i = lowerLeft.x; i <= upperRight.x; i++){
             for (int j = lowerLeft.y; j <= upperRight.y; j++){
                 Vector2d position = new Vector2d(i, j);
-                if (!isOccupied(position)) emptySpace.add(position);
+                if (!isOccupied(position)) {
+                    if (inJungle(i, j)) emptyJungleSpace.add(position);
+                    else emptySpace.add(position);
+                }
             }
         }
 
@@ -43,6 +48,18 @@ public abstract class AbstractWorldMap {
             Vector2d position = emptySpace.get((int) (Math.random()*emptySpace.size()));
             grassMap.put(position, new Grass(position));
         }
+        if (emptyJungleSpace.size() != 0){
+            Vector2d position = emptyJungleSpace.get((int) (Math.random()*emptyJungleSpace.size()));
+            grassMap.put(position, new Grass(position));
+        }
+    }
+
+    private boolean inJungle(int x, int y){
+        int jungleStartX = (int) (upperRight.x - (upperRight.x * jungeRatio))/ 2;
+        int jungleEndX = upperRight.x - jungleStartX;
+        int jungleStartY = (int) (upperRight.y - (upperRight.y * jungeRatio))/ 2;
+        int jungleEndY = upperRight.y - jungleStartY;
+        return jungleStartX <= x && x <= jungleEndX && jungleStartY <= y && y <= jungleEndY;
     }
 
     public void eatGrass(){
@@ -96,7 +113,7 @@ public abstract class AbstractWorldMap {
     }
 
 
-    public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition ){
+    public void positionChanged(Animal animal, Vector2d oldPosition){
         removeAnimal(animal, oldPosition);
 
         place(animal);

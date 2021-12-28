@@ -39,7 +39,7 @@ public class Animal implements IMapElement{
 
     private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
 //        map.positionChanged(oldPosition, newPosition);
-        map.positionChanged(this, oldPosition, newPosition);
+        map.positionChanged(this, oldPosition);
     }
 
     public void randomMove(){

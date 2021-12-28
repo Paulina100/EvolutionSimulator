@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 public class GuiElementBox {
     public VBox vbox;
 
-    public GuiElementBox(IMapElement element){
+    public GuiElementBox(IMapElement element, int width, int height){
         try {
             Image image;
             Label label;
@@ -23,8 +23,8 @@ public class GuiElementBox {
             image = new Image(new FileInputStream(element.toImagePath()));
 
             ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(40);
-            imageView.setFitHeight(40);
+            imageView.setFitWidth(width * 0.75);
+            imageView.setFitHeight(height * 0.75);
             if (element instanceof Animal){
                 label = new Label("" + ((Animal) element).energy);
             }
