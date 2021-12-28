@@ -49,9 +49,7 @@ public abstract class AbstractWorldMap {
         List<Vector2d> eatenGrass = new ArrayList<>();
         for (Vector2d position: grassMap.keySet()) {
             if (animalsAt(position) != null){
-                // tu jakos sortowac
-
-//                Collections.sort(animals);
+                animals.get(position).sort(compareEnergy.reversed());
                 Animal animal = animals.get(position).get(0);
                 animal.energy += Grass.plantEnergy;
                 eatenGrass.add(position);
@@ -61,6 +59,8 @@ public abstract class AbstractWorldMap {
             grassMap.remove(position);
         }
     }
+
+    Comparator<Animal> compareEnergy = Comparator.comparingInt(o -> o.energy);
 
     public void place(Animal animal) {
         Vector2d position = animal.getPosition();

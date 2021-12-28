@@ -19,75 +19,54 @@ import java.util.List;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 
-//public class App extends Application {
-//    @Override
-//    public void init(){
-//
-//    }
-//
-//    @Override
-//    public void start(Stage primaryStage){
-//        GridPane gridPane = new GridPane();
-//        for (int i = 0; i < 3; i++) gridPane.getColumnConstraints().add(new ColumnConstraints(50));
-//        for (int i = 0; i < 3; i++) gridPane.getRowConstraints().add(new RowConstraints(50));
-//
-//        gridPane.setGridLinesVisible(true);
-//        Scene scene = new Scene(gridPane, 800, 800);
-//
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//    }
-//}
-
-
-//import agh.ics.oop.*;
-//        import javafx.application.Application;
-//        import javafx.application.Platform;
-//        import javafx.geometry.HPos;
-//        import javafx.geometry.Pos;
-//        import javafx.geometry.VPos;
-//        import javafx.scene.Scene;
-//        import javafx.scene.control.Button;
-//        import javafx.scene.control.Label;
-//        import javafx.scene.control.TextField;
-//        import javafx.scene.layout.*;
-//        import javafx.stage.Stage;
-//
-//        import static java.lang.System.exit;
-//        import static java.lang.System.out;
 
 public class App extends Application{
     AbstractWorldMap map;
-    Vector2d[] positions;
     SimulationEngine engine;
     GridPane gridPane;
+    VBox interactiveBox;
     Thread engineThread;
+    int width;
+    int height;
+    int numberOfAnimals;
+    int moveEnergy;
+    int startEnergy;
+    int plantEnergy;
+    double jungleRatio;
 
 
-    @Override
-    public void init() {
-        try {
-            //args = getParameters().getRaw().toArray(new String[0]);
-            //directions = new OptionsParser().parse(args);
-            int width = 7;
-            int height = 7;
-            map = new WrapMap(width, height);
-//            positions = new Vector2d[]{new Vector2d(2, 2), new Vector2d(3, 4)};
-            int numberOfAnimals = 10;
-            List<Vector2d> positions = new ArrayList<>();
-            for (int i = 0; i < numberOfAnimals; i++){
-                positions.add(new Vector2d((int) (Math.random()*height), (int) (Math.random()*width)));
-            }
 
-            int startEnergy = 10;
-
-            //engine = new SimulationEngine(directions, map, positions, this);
-            engine = new SimulationEngine(map, positions, startEnergy, this);
-        } catch (IllegalArgumentException ex){
-            out.println(ex.getMessage());
-            exit(0);
-        }
-    }
+//    @Override
+//    public void init() {
+//        try {
+//            //args = getParameters().getRaw().toArray(new String[0]);
+//            //directions = new OptionsParser().parse(args);
+//
+////            int width = 5;
+////            int height = 5;
+////            int numberOfAnimals = 10;
+////            int startEnergy = 10;
+////            int plantEnergy = 10;
+////            int moveEnergy = 1;
+//            Grass.plantEnergy =plantEnergy;
+//            Animal.moveEnergy = moveEnergy;
+//            Animal.reproductionEnergy = startEnergy/2;
+//
+//            map = new WrapMap(width, height);
+////            positions = new Vector2d[]{new Vector2d(2, 2), new Vector2d(3, 4)};
+//            List<Vector2d> positions = new ArrayList<>();
+//            for (int i = 0; i < numberOfAnimals; i++){
+//                positions.add(new Vector2d((int) (Math.random()*height), (int) (Math.random()*width)));
+//            }
+//
+//
+//            //engine = new SimulationEngine(directions, map, positions, this);
+//            engine = new SimulationEngine(map, positions, startEnergy, this);
+//        } catch (IllegalArgumentException ex){
+//            out.println(ex.getMessage());
+//            exit(0);
+//        }
+//    }
 
     private void startEngine(){
         if (!engineThread.isAlive()) {
@@ -98,24 +77,78 @@ public class App extends Application{
 
     @Override
     public void start(Stage primaryStage){
-        gridPane = new GridPane();
-        gridPane.setAlignment(Pos.CENTER);
-        TextField textField = new TextField();
-        Button startButton = new Button("Start");
-        startButton.setOnAction(event -> {
-            engineThread = new Thread(engine);
-            engineThread.start();
-        });
+        try {
+            gridPane = new GridPane();
+            gridPane.setAlignment(Pos.CENTER);
+//            TextField textField = new TextField();
 
-        VBox interactiveBox = new VBox(textField, startButton);
-        HBox buttonsAndMap = new HBox(interactiveBox, gridPane);
 
-        this.updateScene();
+            Label labelWidth = new Label("Width: ");
+            Label labelHeight = new Label("Height: ");
+            Label labelNumberOfAnimals = new Label("Number of animals: ");
+            Label labelStartEnergy = new Label("Start Energy: ");
+            Label labelMoveEnergy = new Label("Move Energy: ");
+            Label labelPlantEnergy = new Label("Plant Energy: ");
+            Label labelJungleRatio = new Label("Jungle Ratio: ");
 
-        Scene scene = new Scene(buttonsAndMap, 800, 600);
-        primaryStage.setScene(scene);
+            TextField widthField = new TextField("5");
+            TextField heightField = new TextField("5");
+            TextField numberOfAnimalsField = new TextField("10");
+            TextField startEnergyField = new TextField("10");
+            TextField moveEnergyField = new TextField("1");
+            TextField plantEnergyField = new TextField("5");
+            TextField jungleRatioField = new TextField("0.3");
+            Button startButton = new Button("Start");
+
+            startButton.setOnAction(event -> {
+                width = Integer.parseInt(widthField.getText());
+                height = Integer.parseInt(heightField.getText());
+                numberOfAnimals = Integer.parseInt(numberOfAnimalsField.getText());
+                moveEnergy = Integer.parseInt(moveEnergyField.getText());
+                startEnergy = Integer.parseInt(startEnergyField.getText());
+                plantEnergy = Integer.parseInt(plantEnergyField.getText());
+                jungleRatio = Double.parseDouble(jungleRatioField.getText());
+
+//            Grass.plantEnergy =plantEnergy;
+//            Animal.moveEnergy = moveEnergy;
+//            Animal.reproductionEnergy = startEnergy/2;
+
+
+                Grass.plantEnergy = plantEnergy;
+                Animal.moveEnergy = moveEnergy;
+                Animal.reproductionEnergy = startEnergy / 2;
+
+                map = new WrapMap(width, height);
+//            positions = new Vector2d[]{new Vector2d(2, 2), new Vector2d(3, 4)};
+                List<Vector2d> positions = new ArrayList<>();
+                for (int i = 0; i < numberOfAnimals; i++) {
+                    positions.add(new Vector2d((int) (Math.random() * height), (int) (Math.random() * width)));
+                }
+
+                interactiveBox.getChildren().clear();
+                interactiveBox.getChildren().add(gridPane);
+                //engine = new SimulationEngine(directions, map, positions, this);
+                engine = new SimulationEngine(map, positions, startEnergy, this);
+
+                engineThread = new Thread(engine);
+                engineThread.start();
+            });
+
+            interactiveBox = new VBox(labelWidth, widthField, labelHeight, heightField, labelNumberOfAnimals, numberOfAnimalsField, labelStartEnergy, startEnergyField, labelMoveEnergy, moveEnergyField, labelPlantEnergy, plantEnergyField, labelJungleRatio, jungleRatioField, startButton, gridPane);
+//        HBox buttonsAndMap = new HBox(interactiveBox, gridPane);
+
+//            this.updateScene();
+
+            Scene scene = new Scene(interactiveBox, 800, 600);
+            primaryStage.setScene(scene);
 //        primaryStage.setFullScreen(true);
-        primaryStage.show();
+            primaryStage.show();
+
+
+        }catch (IllegalArgumentException ex){
+        System.out.println(ex.getMessage());
+        System.exit(1);
+        }
 
     }
 

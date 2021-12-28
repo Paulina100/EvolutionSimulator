@@ -2,6 +2,8 @@ package evolutionSimulation;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -54,11 +56,34 @@ public class AbstractWorldMapTest {
         } catch (IllegalArgumentException ex) {
             assertEquals(ex.getMessage(), outsideMap1 + " is not on map");
         }
-        try{
-            map.place(new Animal(map, posCat, 100));
-        } catch (IllegalArgumentException ex2) {
-            assertEquals(ex2.getMessage(), posCat + " is already occupied");
-        }
+//        try{
+//            map.place(new Animal(map, posCat, 100));
+//        } catch (IllegalArgumentException ex2) {
+//            assertEquals(ex2.getMessage(), posCat + " is already occupied");
+//        }
 
     }
+
+    @Test
+    public void animalSortTest(){
+        Animal duck = new Animal(map, posCat, 50);
+        Animal cow = new Animal(map, posCat, 200);
+        map.place(cat);
+        map.place(duck);
+        map.place(cow);
+
+
+        assertEquals(map.animals.get(posCat).get(0), cat);
+        assertEquals(map.animals.get(posCat).get(1), duck);
+        assertEquals(map.animals.get(posCat).get(2), cow);
+
+        map.animals.get(posCat).sort(compareEnergy.reversed());
+
+        assertEquals(map.animals.get(posCat).get(0), cow);
+        assertEquals(map.animals.get(posCat).get(1), cat);
+        assertEquals(map.animals.get(posCat).get(2), duck);
+    }
+
+    Comparator<Animal> compareEnergy = Comparator.comparingInt(o -> o.energy);
+
 }

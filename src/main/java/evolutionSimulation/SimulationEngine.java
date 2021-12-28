@@ -82,7 +82,7 @@ public class SimulationEngine implements Runnable {
             map.eatGrass();
 
             map.growGrass();
-
+            out.println(animals.size());
             try {
                 Thread.sleep(moveDelay);
             } catch (InterruptedException e){
