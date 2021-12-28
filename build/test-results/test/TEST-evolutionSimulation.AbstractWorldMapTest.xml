@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="evolutionSimulation.AbstractWorldMapTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-12-28T00:28:06" hostname="DESKTOP-VR4HE0U" time="0.028">
+  <properties/>
+  <testcase name="objectAtTest()" classname="evolutionSimulation.AbstractWorldMapTest" time="0.018"/>
+  <testcase name="isOccupiedTest()" classname="evolutionSimulation.AbstractWorldMapTest" time="0.003"/>
+  <testcase name="placeAnimal()" classname="evolutionSimulation.AbstractWorldMapTest" time="0.005"/>
+  <system-out><![CDATA[00011111112222233333445556666777
+00000011112223333444555556667777
+01111111122233333344444445556667
+00001112233334445556666666777777
+00001111112223333334444555556667
+00011111222222333333444455556677
+00011111112222222222333445556677
+00111223333344444455566666777777
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
