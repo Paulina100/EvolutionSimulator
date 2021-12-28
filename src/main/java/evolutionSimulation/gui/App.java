@@ -13,6 +13,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.System.exit;
 import static java.lang.System.out;
 
@@ -66,8 +69,16 @@ public class App extends Application{
         try {
             //args = getParameters().getRaw().toArray(new String[0]);
             //directions = new OptionsParser().parse(args);
-            map = new WrapMap(5, 5);
-            positions = new Vector2d[]{new Vector2d(2, 2), new Vector2d(3, 4)};
+            int width = 7;
+            int height = 7;
+            map = new WrapMap(width, height);
+//            positions = new Vector2d[]{new Vector2d(2, 2), new Vector2d(3, 4)};
+            int numberOfAnimals = 10;
+            List<Vector2d> positions = new ArrayList<>();
+            for (int i = 0; i < numberOfAnimals; i++){
+                positions.add(new Vector2d((int) (Math.random()*height), (int) (Math.random()*width)));
+            }
+
             int startEnergy = 10;
 
             //engine = new SimulationEngine(directions, map, positions, this);

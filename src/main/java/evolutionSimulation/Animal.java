@@ -4,6 +4,7 @@ public class Animal implements IMapElement{
     private MapDirection orientation = MapDirection.NORTH;
     private Vector2d position;
     public int energy;
+    private int moveEnergy = 1;
     private final Genotype genotype = new Genotype();
     private final AbstractWorldMap map;
 
@@ -45,6 +46,7 @@ public class Animal implements IMapElement{
     }
 
     public void move(int direction){
+        energy -= moveEnergy;
         switch (direction){
             case 0 -> {
                 Vector2d newPosition = this.position.add(this.orientation.toUnitVector());

@@ -10,10 +10,6 @@ public class Genotype {
             genotype[i] = (int) (Math.random()*8);
         }
         Arrays.sort(genotype);
-        for (int i = 0; i < 32; i++) {
-            System.out.print(genotype[i]);
-        }
-        System.out.println("");
     }
 
     public int getRandomGen(){

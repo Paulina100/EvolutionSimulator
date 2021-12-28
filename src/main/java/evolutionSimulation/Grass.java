@@ -2,6 +2,7 @@ package evolutionSimulation;
 
 public class Grass implements IMapElement{
     private final Vector2d position;
+    public static int plantEnergy = 10;
 
     public Grass(Vector2d position){
         this.position = position;

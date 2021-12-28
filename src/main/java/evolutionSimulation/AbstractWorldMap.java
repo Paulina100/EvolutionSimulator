@@ -43,7 +43,23 @@ public abstract class AbstractWorldMap {
             Vector2d position = emptySpace.get((int) (Math.random()*emptySpace.size()));
             grassMap.put(position, new Grass(position));
         }
+    }
 
+    public void eatGrass(){
+        List<Vector2d> eatenGrass = new ArrayList<>();
+        for (Vector2d position: grassMap.keySet()) {
+            if (animalsAt(position) != null){
+                // tu jakos sortowac
+
+//                Collections.sort(animals);
+                Animal animal = animals.get(position).get(0);
+                animal.energy += Grass.plantEnergy;
+                eatenGrass.add(position);
+            }
+        }
+        for (Vector2d position: eatenGrass) {
+            grassMap.remove(position);
+        }
     }
 
     public void place(Animal animal) {
@@ -55,9 +71,7 @@ public abstract class AbstractWorldMap {
             animals.put(position, animals1);
             return;
         }
-//        if (objectAt(position) instanceof Animal) {
-//            throw new IllegalArgumentException(animal.getPosition() + " is already occupied");
-//        }
+
         if (!isOnMap(animal.getPosition())) {
             throw new IllegalArgumentException(animal.getPosition() + " is not on map");
         }
@@ -68,8 +82,7 @@ public abstract class AbstractWorldMap {
     public abstract Vector2d checkNewPosition(Vector2d newPosition);
 
     protected boolean canMoveTo(Vector2d position) {
-        if (!isOnMap(position)) return false;
-        return true;
+        return isOnMap(position);
 //        return !(objectAt(position) instanceof Animal);
     }
 
@@ -81,6 +94,7 @@ public abstract class AbstractWorldMap {
         animals.get(position).remove(animal);
         if (animals.get(position).isEmpty()) animals.remove(position);
     }
+
 
     public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition ){
         removeAnimal(animal, oldPosition);
