@@ -1,8 +1,8 @@
-package evolutionSimulation;
+package evolutionSimulation;    // przyjęło się tworzyć nazwy pakietów w stylu odwrotnych nazw domenowych
 
 public class Grass implements IMapElement{
     private final Vector2d position;
-    public static int plantEnergy;
+    public static int plantEnergy;  // tak po prostu modyfikowalne?
 
     public Grass(Vector2d position){
         this.position = position;
@@ -16,7 +16,7 @@ public class Grass implements IMapElement{
         return "*";
     }
 
-    public String toImagePath() {
+    public String toImagePath() {   // lepiej to przenieść do GUI
         return "src/main/resources/grass.png";
     }
 }

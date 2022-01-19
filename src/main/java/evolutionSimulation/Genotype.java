@@ -3,7 +3,7 @@ package evolutionSimulation;
 import java.util.Arrays;
 
 public class Genotype {
-    int[] genotype = new int [32];
+    int[] genotype = new int [32];  // nie private?
     
     public Genotype(){
         for (int i = 0; i < 32; i++) {
@@ -12,7 +12,7 @@ public class Genotype {
         Arrays.sort(genotype);
     }
 
-    public int getRandomGen(){
+    public int getRandomGen(){  // gene
         return genotype[(int)(Math.random()*32)];
     }
 }

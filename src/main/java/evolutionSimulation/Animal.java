@@ -3,10 +3,10 @@ package evolutionSimulation;
 public class Animal implements IMapElement{
     private MapDirection orientation = MapDirection.NORTH;
     private Vector2d position;
-    public int energy;
+    public int energy;  // public?
     public static int moveEnergy;
     public static int reproductionEnergy;
-    private final Genotype genotype = new Genotype();
+    private final Genotype genotype = new Genotype();   // a co z krzyżowaniem?
     private final AbstractWorldMap map;
 
     public Animal (AbstractWorldMap map, Vector2d initialPosition, int initialEnergy){
@@ -37,7 +37,7 @@ public class Animal implements IMapElement{
     }
 
 
-    private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+    private void positionChanged(Vector2d oldPosition, Vector2d newPosition){   // newPosition nie jest potrzebne + czy ta metoda coś wnosi?
 //        map.positionChanged(oldPosition, newPosition);
         map.positionChanged(this, oldPosition);
     }
@@ -46,7 +46,7 @@ public class Animal implements IMapElement{
         move(genotype.getRandomGen());
     }
 
-    public void move(int direction){
+    public void move(int direction){    // a jak przekażę -20?
         energy -= moveEnergy;
         switch (direction){
             case 0 -> {
@@ -58,7 +58,7 @@ public class Animal implements IMapElement{
                     positionChanged(oldPosition, newPosition);
                 }
             }
-            case 4 -> {
+            case 4 -> { // za miesiąc będzie Pani pamiętała czemu 4?
                 Vector2d newPosition = this.position.add(this.orientation.toUnitVector().opposite());
                 newPosition = map.checkNewPosition(newPosition);
                 if (newPosition != null) {

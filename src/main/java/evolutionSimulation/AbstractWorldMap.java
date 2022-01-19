@@ -5,9 +5,9 @@ import java.util.*;
 public abstract class AbstractWorldMap {
     protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
     protected Map<Vector2d, Grass> grassMap = new HashMap<>();
-    protected final static Vector2d lowerLeft = new Vector2d(0, 0);
+    protected final static Vector2d lowerLeft = new Vector2d(0, 0); // static?
     protected Vector2d upperRight;
-    public static double jungeRatio;
+    public static double jungeRatio;    // modyfikowalne + czemu statyczne?
 
     public AbstractWorldMap(int width, int height){
         this.upperRight = new Vector2d(width, height);

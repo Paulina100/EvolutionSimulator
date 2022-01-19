@@ -6,6 +6,6 @@ public class WorldMap extends AbstractWorldMap {
     }
     public Vector2d checkNewPosition (Vector2d newPosition){
         if (canMoveTo(newPosition)) return newPosition;
-        return null;
+        return null;    // nie lepiej zwracać starą pozycję?
     }
 }
